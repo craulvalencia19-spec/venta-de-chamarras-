@@ -4,17 +4,229 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cris sport | Chamarras y Deportivos</title>
-    <!-- Google Fonts Premium -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #0f0f0f;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ── SISTEMA DE FONDO: LLUVIA DE ROPA ANIMADA ── */
+        #clothes-rain-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .falling-clothing {
+            position: absolute;
+            top: -10%;
+            font-size: 1.8rem;
+            opacity: 0.15;
+            filter: drop-shadow(0 0 5px rgba(239, 68, 68, 0.3));
+            animation: fallAnimation linear infinite;
+        }
+
+        @keyframes fallAnimation {
+            0% {
+                top: -10%;
+                transform: translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.18;
+            }
+            90% {
+                opacity: 0.18;
+            }
+            100% {
+                top: 110%;
+                transform: translateX(var(--travel-x)) rotate(var(--travel-rotation));
+                opacity: 0;
+            }
+        }
+
+        .navbar, .hero, .info-section, .catalog-section, .footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── NAVBAR Y LOGO ANIMADO CON OJITOS Y CAMINATA ── */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 5%;
+            background: rgba(17, 17, 17, 0.95);
+            backdrop-filter: blur(8px);
+            border-bottom: 2px solid #ef4444;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .animated-logo {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            cursor: default;
+        }
+
+        .letter-container {
+            position: relative;
+            display: inline-block;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1px;
+            padding-top: 12px;
+            animation: walk 0.6s infinite alternate ease-in-out;
+        }
+
+        .letter-container:nth-child(2) { animation-delay: 0.1s; }
+        .letter-container:nth-child(3) { animation-delay: 0.2s; }
+        .letter-container:nth-child(4) { animation-delay: 0.3s; }
+        .letter-container:nth-child(5) { animation-delay: 0.4s; color: #ef4444; }
+        .letter-container:nth-child(6) { animation-delay: 0.5s; color: #ef4444; }
+        .letter-container:nth-child(7) { animation-delay: 0.6s; color: #ef4444; }
+        .letter-container:nth-child(8) { animation-delay: 0.7s; color: #ef4444; }
+        .letter-container:nth-child(9) { animation-delay: 0.8s; color: #ef4444; }
+
+        .letter-container::before {
+            content: '👀';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.7);
+            font-size: 0.9rem;
+            animation: blinkEyes 3s infinite;
+        }
+
+        .letter-container {
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+        }
+        .letter-container[style*="color"] {
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+        }
+
+        @keyframes walk {
+            0% { transform: translateY(0) rotate(-2deg); }
+            100% { transform: translateY(-6px) rotate(3deg); }
+        }
+
+        @keyframes blinkEyes {
+            0%, 90%, 100% { transform: translateX(-50%) scale(0.7) scaleY(1); }
+            95% { transform: translateX(-50%) scale(0.7) scaleY(0.1); }
+        }
+
+        .menu { display: flex; gap: 24px; }
+        .menu a { color: #ccc; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.2s; }
+        .menu a:hover { color: #ef4444; }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(17,17,17,0.9) 0%, rgba(26,0,0,0.9) 60%, rgba(42,0,0,0.9) 100%);
+            padding: 80px 5%;
+            text-align: center;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        .hero h1 { font-size: 3.5rem; font-weight: 800; color: #fff; letter-spacing: 4px; margin-bottom: 12px; }
+        .hero p { color: #aaa; font-size: 1rem; max-width: 560px; margin: 0 auto 24px; line-height: 1.7; }
+        .btn-primary {
+            display: inline-block; background: #ef4444; color: #fff;
+            padding: 14px 36px; border-radius: 8px; font-weight: 700;
+            text-decoration: none; font-size: 1rem; transition: background 0.2s;
+        }
+        .btn-primary:hover { background: #dc2626; }
+
+        .info-section { padding: 60px 5%; background: rgba(20, 20, 20, 0.85); }
+        .info-container { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 900px; margin: 0 auto; }
+        .info-card { background: #1c1c1c; border: 1px solid #2a2a2a; border-radius: 16px; padding: 28px; }
+        .info-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #ef4444; }
+        .info-card p { color: #bbb; font-size: 0.9rem; line-height: 1.7; margin-bottom: 6px; }
+        .days { color: #f59e0b !important; font-weight: 700 !important; }
+        .hours { color: #22c55e !important; font-weight: 700 !important; }
+
+        .catalog-section { padding: 60px 5%; background: transparent; }
+        .section-title { text-align: center; font-size: 2rem; font-weight: 800; margin-bottom: 40px; color: #fff; letter-spacing: 2px; }
+        .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: #ef4444; margin: 10px auto 0; border-radius: 2px; }
+
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; max-width: 1200px; margin: 0 auto; }
+
+        .product-card { 
+            background: rgba(28, 28, 28, 0.95); 
+            border: 1px solid #2a2a2a; 
+            border-radius: 16px; 
+            overflow: hidden; 
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s; 
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+        }
+        .product-card:hover { 
+            transform: translateY(-8px) scale(1.01); 
+            box-shadow: 0 15px 45px rgba(239, 68, 68, 0.25); 
+            border-color: #ef4444;
+        }
+        .product-card:active {
+            transform: scale(0.97);
+        }
+
+        .product-image { position: relative; overflow: hidden; background: #161616; height: 380px; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+        .product-image img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .badge { position: absolute; top: 12px; left: 12px; background: #ef4444; color: #fff; font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 6px; z-index: 15; }
+
+        .product-info { padding: 18px; pointer-events: auto; }
+        .product-info h4 { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+
+        .order-box { background: #111; border-radius: 8px; padding: 12px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; }
+        .order-box label { font-size: 0.82rem; color: #aaa; display: flex; align-items: center; gap: 8px; }
+        .order-box select { background: #1c1c1c; border: 1px solid #333; color: #fff; padding: 5px 10px; border-radius: 6px; font-size: 0.82rem; flex: 1; }
+
+        .btn-card { position: relative; z-index: 20; display: block; background: #25d366; color: #fff; text-align: center; padding: 11px; border-radius: 8px; font-weight: 700; text-decoration: none; font-size: 0.88rem; transition: background 0.2s; }
+        .btn-card:hover { background: #1da851; }
+
+        .footer { background: #0a0a0a; border-top: 1px solid #1f1f1f; padding: 40px 5%; text-align: center; }
+        .inspiring-phrase { color: #666; font-style: italic; font-size: 0.9rem; margin-bottom: 20px; max-width: 600px; margin-inline: auto; }
+        .divider { width: 60px; height: 1px; background: #ef4444; margin: 16px auto; }
+        .copyright { color: #444; font-size: 0.8rem; }
+
+        .whatsapp-float { position: fixed; bottom: 24px; left: 24px; background: #25d366; width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); z-index: 999; transition: transform 0.2s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+        .whatsapp-icon { width: 30px; height: 30px; fill: #fff; }
+
+        @media (max-width: 768px) {
+            .menu { display: none; }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Barra de Navegación -->
+    <div id="clothes-rain-container"></div>
+
     <header class="navbar">
-        <div class="logo">CRIS<span>SPORT</span></div>
+        <div class="animated-logo">
+            <span class="letter-container">C</span>
+            <span class="letter-container">R</span>
+            <span class="letter-container">I</span>
+            <span class="letter-container">S</span>
+            <span class="letter-container" style="color:#ef4444;">S</span>
+            <span class="letter-container" style="color:#ef4444;">P</span>
+            <span class="letter-container" style="color:#ef4444;">O</span>
+            <span class="letter-container" style="color:#ef4444;">R</span>
+            <span class="letter-container" style="color:#ef4444;">T</span>
+        </div>
         <nav class="menu">
             <a href="#inicio">Inicio</a>
             <a href="#catalogo">Catálogo</a>
@@ -22,17 +234,15 @@
         </nav>
     </header>
 
-    <!-- Portada Principal -->
     <section class="hero" id="inicio">
         <div class="hero-content">
             <h1>Cris sport</h1>
-            <p style="font-weight: 800; color: #ef4444; font-size: 1.4rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">📍 Solo Bolivia</p>
+            <p style="font-weight:800;color:#ef4444;font-size:1.4rem;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">📍 Solo Bolivia</p>
             <p>La mejor calidad en chamarras, deportivos y parkas directas a tu alcance. Visítanos en la Terminal Metropolitana o reserva tu prenda favorita ahora mismo de manera fácil y rápida.</p>
             <a href="#catalogo" class="btn-primary">Ver Catálogo</a>
         </div>
     </section>
 
-    <!-- Información de Ubicación y Reserva -->
     <section class="info-section" id="horarios">
         <div class="info-container">
             <div class="info-card location">
@@ -48,187 +258,182 @@
         </div>
     </section>
 
-    <!-- Catálogo Único de Productos -->
     <section class="catalog-section" id="catalogo">
         <h2 class="section-title">Todas Nuestras Prendas</h2>
-
         <div class="products-grid">
-            
-            <!-- 1. Chamarra River Plate (Varón - Con XXL) -->
+
             <div class="product-card">
-                <div class="product-image">
-                    <img src="image_21d9ed.jpg" alt="Chamarra Térmica River Plate">
+                <div class="product-image p1">
+                    <img src="b29a9afe-7ef5-4db6-8931-1db4003bd340.jpg" alt="Chamarra Parka Deportiva Premium">
                     <span class="badge">Parkas Bs. 200</span>
                 </div>
                 <div class="product-info">
-                    <h4>Chamarra Parka River Plate - Codere</h4>
-                    <p style="font-size: 0.9rem; font-weight: bold; color: #25d366; margin-bottom: 8px;">Precio: 200 Bs.</p>
+                    <h4>Producto (1) - Chamarra Parka Deportiva Premium</h4>
+                    <p style="font-size:0.9rem;font-weight:bold;color:#25d366;margin-bottom:5px;">Precio: 200 Bs.</p>
+                    <p style="font-size:0.85rem;color:#ddd;margin-bottom:8px;">🧵 <strong>Material:</strong> Tela impermeable, con bonitos diseños y forro térmico ideal para el frío.</p>
                     <div class="order-box">
                         <label>Talla: <select><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></label>
                         <label>Color: <select><option>Negro / Rojo</option></select></label>
                     </div>
-                    <a href="https://wa.me/59178789955?text=Hola%20Cris%20sport!%20Quiero%20reservar%20la%20Chamarra%20Parka%20de%20River%20Plate%20por%20200%20Bs." target="_blank" class="btn-card">Reservar por WhatsApp</a>
+                    <a href="https://wa.me/59178789955?text=Buenas%20tardes%20,%20quiero%20reservar%20el%20producto%20(1)%20del%20catalogo" target="_blank" class="btn-card">Reservar por WhatsApp</a>
                 </div>
             </div>
 
-            <!-- 2. Chamarra Bolivia FBF (Varón - Con XXL) -->
             <div class="product-card">
-                <div class="product-image">
-                    <img src="image_223136.jpg" alt="Chamarra Selección Bolivia FBF">
+                <div class="product-image p2">
+                    <img src="image_223136.jpg" alt="Chamarra Parka Selección">
                     <span class="badge">Parkas Bs. 200</span>
                 </div>
                 <div class="product-info">
-                    <h4>Chamarra Parka Selección Boliviana FBF - Marathon</h4>
-                    <p style="font-size: 0.9rem; font-weight: bold; color: #25d366; margin-bottom: 8px;">Precio: 200 Bs.</p>
+                    <h4>Producto (2) - Chamarra Parka Selección</h4>
+                    <p style="font-size:0.9rem;font-weight:bold;color:#25d366;margin-bottom:5px;">Precio: 200 Bs.</p>
+                    <p style="font-size:0.85rem;color:#ddd;margin-bottom:8px;">🧵 <strong>Material:</strong> Tela impermeable de alta resistencia, con bonitos diseños y abrigo interior.</p>
                     <div class="order-box">
                         <label>Talla: <select><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></label>
-                        <label>Color: <select><option>Negro Oficial FBF</option></select></label>
+                        <label>Color: <select><option>Negro Oficial</option></select></label>
                     </div>
-                    <a href="https://wa.me/59178789955?text=Hola%20Cris%20sport!%20Quiero%20reservar%20la%20Parka%20Negra%20FBF%20de%20la%20Selección%20por%20200%20Bs." target="_blank" class="btn-card">Reservar por WhatsApp</a>
+                    <a href="https://wa.me/59178789955?text=Buenas%20tardes%20,%20quiero%20reservar%20el%20producto%20(2)%20del%20catalogo" target="_blank" class="btn-card">Reservar por WhatsApp</a>
                 </div>
             </div>
 
-            <!-- 3. Chamarra de Mujer Principal (Mujer - Sin XXL) -->
             <div class="product-card">
-                <div class="product-image">
-                    <img src="4e03b42d-1ba3-4c78-8ea5-389ae6e658b0.jpg" alt="Chamarra Térmica con Capucha para Mujer">
+                <div class="product-image p3">
+                    <img src="4e03b42d-1ba3-4c78-8ea5-389ae6e658b0.jpg" alt="Chamarra de Mujer Puffer">
                     <span class="badge">Puffer Bs. 110</span>
                 </div>
                 <div class="product-info">
-                    <h4>Chamarra de Mujer (Puffer 110)</h4>
-                    <p style="font-size: 0.9rem; font-weight: bold; color: #25d366; margin-bottom: 5px;">Precio: 110 Bs.</p>
-                    <p style="font-size: 0.85rem; color: #555; margin-bottom: 8px;">✨ ¡Hermosos modelos con forro interno de felpa!</p>
+                    <h4>Producto (3) - Chamarra de Mujer Puffer</h4>
+                    <p style="font-size:0.9rem;font-weight:bold;color:#25d366;margin-bottom:5px;">Precio: 110 Bs.</p>
+                    <p style="font-size:0.85rem;color:#ddd;margin-bottom:8px;">🧵 <strong>Material:</strong> Tela impermeable de alta densidad, completamente frisado con forro interno de felpa.</p>
                     <div class="order-box">
                         <label>Talla: <select><option>S</option><option>M</option><option>L</option><option>XL</option></select></label>
                         <label>Color: <select><option>Rosado</option><option>Beige</option><option>Azul Marino</option><option>Gris</option><option>Guindo</option></select></label>
                     </div>
-                    <a href="https://wa.me/59178789955?text=Hola%20Cris%20sport!%20Quiero%20reservar%20la%20Chamarra%20de%20Mujer%20Puffer%20de%20110%20Bs." target="_blank" class="btn-card">Reservar por WhatsApp</a>
+                    <a href="https://wa.me/59178789955?text=Buenas%20tardes%20,%20quiero%20reservar%20el%20producto%20(3)%20del%20catalogo" target="_blank" class="btn-card">Reservar por WhatsApp</a>
                 </div>
             </div>
 
-            <!-- 4. Muestra de Colores Disponibles (Mujer - Sin XXL) -->
             <div class="product-card">
-                <div class="product-image">
-                    <img src="aaf6f848-8f7c-4694-b6ac-b7c4376df46d.jpg" alt="Variedad de colores chamarras de mujer">
+                <div class="product-image p4">
+                    <img src="aaf6f848-8f7c-4694-b6ac-b7c4376df46d.jpg" alt="Gama de Colores Puffer Dama">
                     <span class="badge">Variedad</span>
                 </div>
                 <div class="product-info">
-                    <h4>Gama de Colores - Chamarras de Mujer</h4>
-                    <p style="font-size: 0.85rem; color: #666; line-height: 1.4; margin-bottom: 10px;">Tonos disponibles para entrega inmediata: Rosado, Beige, Azul Marino, Gris y Guindo.</p>
-                    <a href="https://wa.me/59178789955?text=Hola%20Cris%20sport!%20Quiero%20consultar%20los%20colores%20disponibles." target="_blank" class="btn-card">Consultar tonos</a>
+                    <h4>Producto (4) - Gama de Colores Puffer Dama</h4>
+                    <p style="font-size:0.85rem;color:#bbb;line-height:1.4;margin-bottom:10px;">🧵 <strong>Material:</strong> Tela impermeable, acolchado térmico frisado. Tonos: Rosado, Beige, Azul Marino, Gris y Guindo.</p>
+                    <a href="https://wa.me/59178789955?text=Buenas%20tardes%20,%20quiero%20consultar%20tonos%20del%20producto%20(4)" target="_blank" class="btn-card">Consultar tonos</a>
                 </div>
             </div>
 
-            <!-- 5. Deportivo Nike Rojo (Varón - Con XXL) -->
             <div class="product-card">
-                <div class="product-image">
-                    <img src="image_2237a0.jpg" alt="Deportivo Nike Rojo">
-                    <span class="badge">Juego Bs. 140</span>
+                <div class="product-image p5">
+                    <img src="image_2237a0.jpg" alt="Deportivo Running Sport Rojo">
+                    <span class="badge">Juego Bs. 180</span>
                 </div>
                 <div class="product-info">
-                    <h4>Deportivo Nike Running Rojo</h4>
-                    <p style="font-size: 0.9rem; font-weight: bold; color: #25d366; margin-bottom: 8px;">Juego Completo: 140 Bs. / Solo Chamarra: 110 Bs.</p>
+                    <h4>Producto (5) - Deportivo Running Sport Rojo</h4>
+                    <p style="font-size:0.9rem;font-weight:bold;color:#25d366;margin-bottom:5px;">Juego Completo: 180 Bs. / Solo Chamarra: 110 Bs.</p>
+                    <p style="font-size:0.85rem;color:#ddd;margin-bottom:8px;">🧵 <strong>Material:</strong> Chamarra de tipo rompevientos de alta calidad, ligera y resistente.</p>
                     <div class="order-box">
-                        <label>Opción: <select><option>Juego Completo (140 Bs.)</option><option>Solo Chamarra (110 Bs.)</option></select></label>
+                        <label>Opción: <select><option>Juego Completo (180 Bs.)</option><option>Solo Chamarra (110 Bs.)</option></select></label>
                         <label>Talla: <select><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></label>
                         <label>Color: <select><option>Rojo / Negro</option></select></label>
                     </div>
-                    <a href="https://wa.me/59178789955?text=Hola%20Cris%20sport!%20Quiero%20reservar%20el%20Deportivo%20Nike%20Running%20Rojo." target="_blank" class="btn-card">Reservar por WhatsApp</a>
+                    <a href="https://wa.me/59178789955?text=Buenas%20tardes%20,%20quiero%20reservar%20el%20producto%20(5)%20del%20catalogo" target="_blank" class="btn-card">Reservar por WhatsApp</a>
                 </div>
             </div>
 
-            <!-- 6. Rompevientos Argentina (Varón - Con XXL) -->
             <div class="product-card">
-                <div class="product-image">
-                    <img src="image_2237ff.jpg" alt="Chamarra Argentina">
+                <div class="product-image p6">
+                    <img src="image_2237ff.jpg" alt="Rompevientos Selección Albiceleste">
                     <span class="badge">Solo Chamarra Bs. 110</span>
                 </div>
                 <div class="product-info">
-                    <h4>Rompevientos Selección Argentina AFA</h4>
-                    <p style="font-size: 0.9rem; font-weight: bold; color: #25d366; margin-bottom: 8px;">Solo Chamarra: 110 Bs.</p>
+                    <h4>Producto (6) - Rompevientos Selección Albiceleste</h4>
+                    <p style="font-size:0.9rem;font-weight:bold;color:#25d366;margin-bottom:5px;">Solo Chamarra: 110 Bs.</p>
+                    <p style="font-size:0.85rem;color:#ddd;margin-bottom:8px;">🧵 <strong>Material:</strong> Tela rompevientos de ingeniería ligera, repelente a brisas ligeras.</p>
                     <div class="order-box">
                         <label>Talla: <select><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></label>
                         <label>Color: <select><option>Blanco / Azul Celeste</option></select></label>
                     </div>
-                    <a href="https://wa.me/59178789955?text=Hola%20Cris%20sport!%20Quiero%20reservar%20la%20Chamarra%20de%20Argentina%20de%20110%20Bs." target="_blank" class="btn-card">Reservar por WhatsApp</a>
+                    <a href="https://wa.me/59178789955?text=Buenas%20tardes%20,%20quiero%20reservar%20el%20producto%20(6)%20del%20catalogo" target="_blank" class="btn-card">Reservar por WhatsApp</a>
                 </div>
             </div>
 
-            <!-- 7. Deportivo Nike Verde (Varón - Con XXL) -->
             <div class="product-card">
-                <div class="product-image">
-                    <img src="image_2234da.jpg" alt="Deportivo Nike Verde">
-                    <span class="badge">Juego Bs. 140</span>
+                <div class="product-image p7">
+                    <img src="image_2234da.jpg" alt="Deportivo Urban Verde Olivo">
+                    <span class="badge">Juego Bs. 180</span>
                 </div>
                 <div class="product-info">
-                    <h4>Deportivo Nike Urban Verde Olivo</h4>
-                    <p style="font-size: 0.9rem; font-weight: bold; color: #25d366; margin-bottom: 8px;">Juego Completo: 140 Bs. / Solo Chamarra: 110 Bs.</p>
+                    <h4>Producto (7) - Deportivo Urban Verde Olivo</h4>
+                    <p style="font-size:0.9rem;font-weight:bold;color:#25d366;margin-bottom:5px;">Juego Completo: 180 Bs. / Solo Chamarra: 110 Bs.</p>
+                    <p style="font-size:0.85rem;color:#ddd;margin-bottom:8px;">🧵 <strong>Material:</strong> Chamarra rompevientos con cortes aerodinámicos modernos y cómodos.</p>
                     <div class="order-box">
-                        <label>Opción: <select><option>Juego Completo (140 Bs.)</option><option>Solo Chamarra (110 Bs.)</option></select></label>
+                        <label>Opción: <select><option>Juego Completo (180 Bs.)</option><option>Solo Chamarra (110 Bs.)</option></select></label>
                         <label>Talla: <select><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></label>
                         <label>Color: <select><option>Verde Olivo</option></select></label>
                     </div>
-                    <a href="https://wa.me/59178789955?text=Hola%20Cris%20sport!%20Quiero%20reservar%20el%20Deportivo%20Nike%20Verde%20Olivo." target="_blank" class="btn-card">Reservar por WhatsApp</a>
+                    <a href="https://wa.me/59178789955?text=Buenas%20tardes%20,%20quiero%20reservar%20el%20producto%20(7)%20del%20catalogo" target="_blank" class="btn-card">Reservar por WhatsApp</a>
                 </div>
             </div>
 
-            <!-- 8. Deportivo Nike Azul (Varón - Con XXL) -->
             <div class="product-card">
-                <div class="product-image">
-                    <img src="image_2233e0.jpg" alt="Deportivo Nike Azul">
-                    <span class="badge">Juego Bs. 140</span>
+                <div class="product-image p8">
+                    <img src="image_2233e0.jpg" alt="Deportivo Pro Azul Eléctrico">
+                    <span class="badge">Juego Bs. 180</span>
                 </div>
                 <div class="product-info">
-                    <h4>Deportivo Nike Pro Azul Eléctrico</h4>
-                    <p style="font-size: 0.9rem; font-weight: bold; color: #25d366; margin-bottom: 8px;">Juego Completo: 140 Bs. / Solo Chamarra: 110 Bs.</p>
+                    <h4>Producto (8) - Deportivo Pro Azul Eléctrico</h4>
+                    <p style="font-size:0.9rem;font-weight:bold;color:#25d366;margin-bottom:5px;">Juego Completo: 180 Bs. / Solo Chamarra: 110 Bs.</p>
+                    <p style="font-size:0.85rem;color:#ddd;margin-bottom:8px;">🧵 <strong>Material:</strong> Chamarra de composición rompevientos ideal para entrenamiento físico o diario.</p>
                     <div class="order-box">
-                        <label>Opción: <select><option>Juego Completo (140 Bs.)</option><option>Solo Chamarra (110 Bs.)</option></select></label>
+                        <label>Opción: <select><option>Juego Completo (180 Bs.)</option><option>Solo Chamarra (110 Bs.)</option></select></label>
                         <label>Talla: <select><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></label>
                         <label>Color: <select><option>Azul Eléctrico</option></select></label>
                     </div>
-                    <a href="https://wa.me/59178789955?text=Hola%20Cris%20sport!%20Quiero%20reservar%20el%20Deportivo%20Nike%20Azul%20Eléctrico." target="_blank" class="btn-card">Reservar por WhatsApp</a>
+                    <a href="https://wa.me/59178789955?text=Buenas%20tardes%20,%20quiero%20reservar%20el%20producto%20(8)%20del%20catalogo" target="_blank" class="btn-card">Reservar por WhatsApp</a>
                 </div>
             </div>
 
-            <!-- 9. Deportivo Nike Negro (Varón - Con XXL) -->
             <div class="product-card">
-                <div class="product-image">
-                    <img src="image_21d704.jpg" alt="Deportivo Nike Negro">
-                    <span class="badge">Juego Bs. 140</span>
+                <div class="product-image p9">
+                    <img src="image_21d704.jpg" alt="Deportivo Classic Negro Urbano">
+                    <span class="badge">Juego Bs. 180</span>
                 </div>
                 <div class="product-info">
-                    <h4>Deportivo Nike Classic Negro</h4>
-                    <p style="font-size: 0.9rem; font-weight: bold; color: #25d366; margin-bottom: 8px;">Juego Completo: 140 Bs. / Solo Chamarra: 110 Bs.</p>
+                    <h4>Producto (9) - Deportivo Classic Negro Urbano</h4>
+                    <p style="font-size:0.9rem;font-weight:bold;color:#25d366;margin-bottom:5px;">Juego Completo: 180 Bs. / Solo Chamarra: 110 Bs.</p>
+                    <p style="font-size:0.85rem;color:#ddd;margin-bottom:8px;">🧵 <strong>Material:</strong> Confeccionado en tela rompevientos premium; una prenda ligera, cómoda y de alta protección diaria.</p>
                     <div class="order-box">
-                        <label>Opción: <select><option>Juego Completo (140 Bs.)</option><option>Solo Chamarra (110 Bs.)</option></select></label>
+                        <label>Opción: <select><option>Juego Completo (180 Bs.)</option><option>Solo Chamarra (110 Bs.)</option></select></label>
                         <label>Talla: <select><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></label>
                         <label>Color: <select><option>Negro Absoluto</option></select></label>
                     </div>
-                    <a href="https://wa.me/59178789955?text=Hola%20Cris%20sport!%20Quiero%20reservar%20el%20Deportivo%20Nike%20Negro%20Classic." target="_blank" class="btn-card">Reservar por WhatsApp</a>
+                    <a href="https://wa.me/59178789955?text=Buenas%20tardes%20,%20quiero%20reservar%20el%20producto%20(9)%20del%20catalogo" target="_blank" class="btn-card">Reservar por WhatsApp</a>
                 </div>
             </div>
 
-            <!-- 10. Parka Selección Boliviana Verde/Negra (Varón - Con XXL) -->
             <div class="product-card">
-                <div class="product-image">
-                    <img src="2e7b89ca-f5c6-4d5c-b50b-1c500f1202ae.jpg" alt="Parka Oficial Selección Boliviana Verde y Negra">
+                <div class="product-image p10">
+                    <img src="2e7b89ca-f5c6-4d5c-b50b-1c500f1202ae.jpg" alt="Chamarra Parka Deportiva Bicolor">
                     <span class="badge">Parkas Bs. 200</span>
                 </div>
                 <div class="product-info">
-                    <h4>Parka Marathon Selección Boliviana - Verde/Negro</h4>
-                    <p style="font-size: 0.9rem; font-weight: bold; color: #25d366; margin-bottom: 8px;">Precio: 200 Bs.</p>
+                    <h4>Producto (10) - Chamarra Parka Deportiva Bicolor</h4>
+                    <p style="font-size:0.9rem;font-weight:bold;color:#25d366;margin-bottom:5px;">Precio: 200 Bs.</p>
+                    <p style="font-size:0.85rem;color:#ddd;margin-bottom:8px;">🧵 <strong>Material:</strong> Elaborada con tela exterior impermeable de alta densidad con bonitos diseños deportivos y forro térmico grueso.</p>
                     <div class="order-box">
                         <label>Talla: <select><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select></label>
                         <label>Color: <select><option>Verde / Negro</option></select></label>
                     </div>
-                    <a href="https://wa.me/59178789955?text=Hola%20Cris%20sport!%20Quiero%20reservar%20la%20Parka%20Verde%20con%20Negro%20de%20la%20Selección%20Boliviana." target="_blank" class="btn-card">Reservar por WhatsApp</a>
+                    <a href="https://wa.me/59178789955?text=Buenas%20tardes%20,%20quiero%20reservar%20el%20producto%20(10)%20del%20catalogo" target="_blank" class="btn-card">Reservar por WhatsApp</a>
                 </div>
             </div>
 
         </div>
     </section>
 
-    <!-- Pie de Página -->
     <footer class="footer">
         <div class="footer-content">
             <p class="inspiring-phrase">"La ropa que usas define tu actitud. No esperes el momento perfecto, vístete hoy en Cris sport para conquistar tus metas."</p>
@@ -237,12 +442,47 @@
         </div>
     </footer>
 
-    <!-- Botón Flotante de WhatsApp Global -->
-    <a href="https://wa.me/59178789955?text=Hola%20Cris%20sport!%20Quiero%20hacer una consulta sobre los modelos disponibles." class="whatsapp-float" target="_blank" aria-label="Contacto por WhatsApp">
+    <a href="https://wa.me/59178789955?text=Hola%20Cris%20sport!%20Quiero%20hacer%20una%20consulta%20sobre%20los%20modelos%20disponibles." class="whatsapp-float" target="_blank" aria-label="Contacto por WhatsApp">
         <svg viewBox="0 0 32 32" class="whatsapp-icon">
             <path d="M16 2a13 13 0 0 0-11.3 19.4L3 29l7.8-2A13 13 0 1 0 16 2zm6.8 18.2c-.3.9-1.7 1.7-2.4 1.8-.7.1-1.5.2-4.6-1.1-3.9-1.6-6.4-5.6-6.6-5.9-.2-.2-1.5-2-1.5-3.8 0-1.8.9-2.7 1.3-3.1.3-.3.7-.5 1.1-.5h.4c.3 0 .6 0 .8.6.3.7.9 2.3 1 2.5.1.2.1.4 0 .6-.1.2-.2.4-.4.6l-.6.7c-.2.2-.4.4-.2.8a10.4 10.4 0 0 0 1.9 2.4 7.7 7.7 0 0 0 2.7 1.7c.4.2.6.1.9-.2l.8-1c.2-.3.5-.2.8-.1l2.5 1.2c.4.2.6.3.7.5.1.3.1 1.2-.2 2.1z"/>
         </svg>
     </a>
+
+    <script>
+        const rainContainer = document.getElementById('clothes-rain-container');
+
+        const clothingIcons = ['🧥', '👕', '👖', '👟', '🛍️', '👚', '🎽'];
+        const maxClothes = 25;
+
+        function spawnClothing() {
+            if (document.querySelectorAll('.falling-clothing').length >= maxClothes) return;
+
+            const clothing = document.createElement('div');
+            clothing.classList.add('falling-clothing');
+            
+            clothing.innerText = clothingIcons[Math.floor(Math.random() * clothingIcons.length)];
+            clothing.style.left = `${Math.random() * 100}vw`;
+            
+            const duration = 6 + Math.random() * 8;
+            const size = 1.2 + Math.random() * 1.5;
+            
+            clothing.style.animationDuration = `${duration}s`;
+            clothing.style.fontSize = `${size}rem`;
+            
+            const travelX = `${-80 + Math.random() * 160}px`;
+            const travelRotation = `${180 + Math.random() * 360}deg`;
+            clothing.style.setProperty('--travel-x', travelX);
+            clothing.style.setProperty('--travel-rotation', travelRotation);
+
+            rainContainer.appendChild(clothing);
+
+            setTimeout(() => {
+                clothing.remove();
+            }, duration * 1000);
+        }
+
+        setInterval(spawnClothing, 400);
+    </script>
 
 </body>
 </html>
